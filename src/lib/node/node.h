@@ -23,7 +23,7 @@ typedef struct {
 } PropertyMap;
 
 typedef struct {
-    uint64_t nodeId;
+    uint64_t id;
     PropertyMap* properties;
 } Node;
 
