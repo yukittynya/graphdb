@@ -1,6 +1,7 @@
-#ifndef NODE_H
+#ifndef NODE_H 
 #define NODE_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 typedef enum {
@@ -12,8 +13,18 @@ typedef enum {
 } PropertyType;
 
 typedef struct {
+    PropertyType type;
+    union {
+        int i32;
+        double f64;
+        char* string;
+        bool boolean;
+    } value;
+} PropertyValue;
+
+typedef struct {
     char* key;
-    PropertyType* value;
+    PropertyValue* value;
 } Property;
 
 typedef struct {
