@@ -2,6 +2,7 @@
 #define HASHTABLE_H
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct {
     char* key;
@@ -17,8 +18,8 @@ typedef struct {
     HashTableItem** items;
     ListNode** overflowBuckets;
 
-    int size;
-    int count;
+    size_t size;
+    size_t count;
 } HashTable;
 
 int hashString(char* str);
@@ -27,8 +28,8 @@ ListNode* insertList(ListNode* head, HashTableItem* item);
 HashTableItem* removeFromList(ListNode* head);
 void handleCollision(HashTable* table, int index, HashTableItem* item);
 
-HashTableItem* createItem(char* key, char* value);
 
+HashTableItem* createItem(char* key, char* value);
 HashTable* createHashTable(int size);
 bool insertHashTable(HashTable* table, char* key, char* value);
 char* searchHashTable(HashTable* table, char* key);

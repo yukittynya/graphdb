@@ -73,11 +73,9 @@ void handleCollision(HashTable* table, int index, HashTableItem* item) {
 
         table -> overflowBuckets[index] = head;
     } else {
-        table -> overflowBuckets[index] = insertList(head, item);
+        insertList(head, item);
     }
 }
-
-// Items
 
 HashTableItem* createItem(char* key, char* value) {
     HashTableItem* item = (HashTableItem*) malloc(sizeof(HashTableItem));
@@ -90,8 +88,6 @@ HashTableItem* createItem(char* key, char* value) {
 
     return item;
 }
-
-// Table
 
 HashTable* createHashTable(int size) {
     HashTable* table = (HashTable*) malloc(sizeof(HashTable));
@@ -240,14 +236,24 @@ void printHashTable(HashTable* table) {
     printf("\n--------- Hash Table ---------\n");
 
     for (int i = 0; i < table -> size; i++) {
-        if (table -> items[i] && table -> overflowBuckets[i] == NULL) {
-                printf("\nIndex: %d\n\tKey: %s\n\tValue: %s\n", i, table -> items[i] -> key, table -> items[i] -> value);
-        }
+        if (table -> items[i] != NULL) {
+            printf("\nIndex: %d\n\tKey: %s\n\tValue: %s\n", i, table -> items[i] -> key, table -> items[i] -> value);
+            if (table -> overflowBuckets[i] != NULL) {
+                ListNode* head = table -> overflowBuckets[i];
+
+                while (head) {
+                    printf("\nBUCKET Index: %d\n\tKey: %s\n\tValue: %s\n", i, head -> item -> key, head -> item -> value);
+
+                    head = head -> next;
+                }
+
+            }
+        }     
     }
 
     float percent = (float)table -> count / (float)table -> size * 100; 
 
-    printf("\nUsed %d of %d slots (%.4f%%)\n", table -> count, table -> size, percent);
+    printf("\nUsed %zu of %zu slots (%.4f%%)\n", table -> count, table -> size, percent);
 
     printf("\n--------- Hash Table ---------\n");
 }
