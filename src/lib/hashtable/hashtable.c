@@ -2,18 +2,13 @@
 #include "../info.h"
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-int hashString(char* str) {
-    int i = 0.0;
-
-    for (int j = 0; str[j]; j++) {
-        i += str[j];
-    }
-
-    return i % CAPACITY;
+int hash(uint64_t key) {
+    return ((key * 2654435761u) >> 16) % CAPACITY;
 }
 
 ListNode* insertList(ListNode* head, HashTableItem* item) {
@@ -77,14 +72,13 @@ void handleCollision(HashTable* table, int index, HashTableItem* item) {
     }
 }
 
-HashTableItem* createItem(char* key, char* value) {
+HashTableItem* createItem(uint64_t key, void* value, size_t valueSize) {
     HashTableItem* item = (HashTableItem*) malloc(sizeof(HashTableItem));
 
-    item -> key = (char*) malloc(strlen(key) + 1);
-    item -> value = (char*) malloc(strlen(value) + 1);
+    item -> key = key;
+    item -> value = malloc(valueSize);
 
-    strcpy(item -> key, key);
-    strcpy(item -> value, value);
+    memcpy(item -> value, value, valueSize);
 
     return item;
 }
@@ -112,13 +106,13 @@ HashTable* createHashTable(int size) {
 
 // Return false on insert failure, upgrade to result type in the future
 // I just want to get it working for now
-bool insertHashTable(HashTable* table, char* key, char* value) {
+bool insertHashTable(HashTable* table, int key, char* value) {
     if (table -> count == table -> size) {
         return false;
     }
 
     HashTableItem* item = createItem(key, value);
-    int index = hashString(key);
+    int index = hash(key);
 
     HashTableItem* currentItem = table -> items[index];
 
@@ -135,7 +129,7 @@ bool insertHashTable(HashTable* table, char* key, char* value) {
 }
 
 char* searchHashTable(HashTable* table, char* key) {
-    int index = hashString(key);
+    int index = hash(key);
     HashTableItem* item = table -> items[index];
 
     if (item == NULL) {
@@ -162,7 +156,7 @@ char* searchHashTable(HashTable* table, char* key) {
 }
 
 void deleteFromHashTable(HashTable* table, char* key) {
-    int index = hashString(key);
+    int index = hash(key);
     HashTableItem* item = table -> items[index];
 
     if (item == NULL) return;

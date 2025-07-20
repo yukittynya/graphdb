@@ -2,11 +2,14 @@
 #define HASHTABLE_H
 
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdlib.h>
 
+#define CREATE_ITEM(k, v) createItem(k, &(v), sizeof(v))
+
 typedef struct {
-    char* key;
-    char* value;
+    uint64_t key;
+    void* value;
 } HashTableItem;
 
 typedef struct ListNode {
@@ -22,14 +25,14 @@ typedef struct {
     size_t count;
 } HashTable;
 
-int hashString(char* str);
+int hash(uint64_t key);
 
 ListNode* insertList(ListNode* head, HashTableItem* item);
 HashTableItem* removeFromList(ListNode* head);
 void handleCollision(HashTable* table, int index, HashTableItem* item);
 
 
-HashTableItem* createItem(char* key, char* value);
+HashTableItem* createItem(uint64_t key, void* value, size_t valueSize);
 HashTable* createHashTable(int size);
 bool insertHashTable(HashTable* table, char* key, char* value);
 char* searchHashTable(HashTable* table, char* key);
