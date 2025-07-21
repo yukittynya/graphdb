@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define CREATE_ITEM(k, v) createItem(k, &(v), sizeof(v))
+#define INSERT_ITEM(t, k, v) insertHashTable(t, k, &(v), sizeof(v))
 
 typedef struct {
     uint64_t key;
@@ -34,9 +34,9 @@ void handleCollision(HashTable* table, int index, HashTableItem* item);
 
 HashTableItem* createItem(uint64_t key, void* value, size_t valueSize);
 HashTable* createHashTable(int size);
-bool insertHashTable(HashTable* table, char* key, char* value);
-char* searchHashTable(HashTable* table, char* key);
-void deleteFromHashTable(HashTable* table, char* key);
+bool insertHashTable(HashTable* table, uint64_t key, void* value, size_t valueSize);
+char* searchHashTable(HashTable* table, uint64_t key);
+void deleteFromHashTable(HashTable* table, uint64_t key);
 
 
 void freeHashItem(HashTableItem* item);

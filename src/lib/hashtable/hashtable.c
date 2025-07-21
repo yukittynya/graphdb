@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 
 int hash(uint64_t key) {
     return ((key * 2654435761u) >> 16) % CAPACITY;
@@ -49,7 +50,6 @@ HashTableItem* removeFromList(ListNode* head) {
     HashTableItem* item = NULL;
     memcpy(current -> item, item, sizeof(HashTableItem));
 
-    free(current -> item -> key);
     free(current -> item -> value);
     free(current -> item);
     free(current);
@@ -106,12 +106,13 @@ HashTable* createHashTable(int size) {
 
 // Return false on insert failure, upgrade to result type in the future
 // I just want to get it working for now
-bool insertHashTable(HashTable* table, int key, char* value) {
+bool insertHashTable(HashTable* table, uint64_t key, void* value, size_t valueSize) {
     if (table -> count == table -> size) {
         return false;
     }
 
-    HashTableItem* item = createItem(key, value);
+    //HashTableItem* item = CREATE_ITEM(key, value);
+    HashTableItem* item = createItem(key, value, valueSize);
     int index = hash(key);
 
     HashTableItem* currentItem = table -> items[index];
@@ -128,7 +129,7 @@ bool insertHashTable(HashTable* table, int key, char* value) {
     }
 }
 
-char* searchHashTable(HashTable* table, char* key) {
+char* searchHashTable(HashTable* table, uint64_t key) {
     int index = hash(key);
     HashTableItem* item = table -> items[index];
 
@@ -136,7 +137,7 @@ char* searchHashTable(HashTable* table, char* key) {
         return NULL;
     }
 
-    if (strcmp(item -> key, key) == 0) {
+    if (item -> key == key) {
         return item -> value;
     }
 
@@ -147,7 +148,7 @@ char* searchHashTable(HashTable* table, char* key) {
         head = head -> next;
     }
 
-    if (strcmp(item -> key, key) == 0) {
+    if (item -> key == key) {
         return item -> value;
     }
 
@@ -155,7 +156,7 @@ char* searchHashTable(HashTable* table, char* key) {
     return NULL;
 }
 
-void deleteFromHashTable(HashTable* table, char* key) {
+void deleteFromHashTable(HashTable* table, uint64_t key) {
     int index = hash(key);
     HashTableItem* item = table -> items[index];
 
@@ -181,7 +182,6 @@ void deleteFromHashTable(HashTable* table, char* key) {
 }
 
 void freeHashItem(HashTableItem* item) {
-    free(item -> key);
     free(item -> value); 
     free(item);
 }
@@ -219,7 +219,6 @@ void freeLinkedList(ListNode* head) {
         current = head;
         head = head -> next;
 
-        free(current -> item -> key);
         free(current -> item -> value);
         free(current -> item);
         free(current);
@@ -231,12 +230,12 @@ void printHashTable(HashTable* table) {
 
     for (int i = 0; i < table -> size; i++) {
         if (table -> items[i] != NULL) {
-            printf("\nIndex: %d\n\tKey: %s\n\tValue: %s\n", i, table -> items[i] -> key, table -> items[i] -> value);
+            printf("\nIndex: %d\n\tKey: %zu\n\tValue: %p\n", i, table -> items[i] -> key, table -> items[i] -> value);
             if (table -> overflowBuckets[i] != NULL) {
                 ListNode* head = table -> overflowBuckets[i];
 
                 while (head) {
-                    printf("\nBUCKET Index: %d\n\tKey: %s\n\tValue: %s\n", i, head -> item -> key, head -> item -> value);
+                    printf("\nBUCKET Index: %d\n\tKey: %zu\n\tValue: %p\n", i, head -> item -> key, head -> item -> value);
 
                     head = head -> next;
                 }
