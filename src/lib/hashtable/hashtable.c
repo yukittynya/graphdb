@@ -111,7 +111,6 @@ bool insertHashTable(HashTable* table, uint64_t key, void* value, size_t valueSi
         return false;
     }
 
-    //HashTableItem* item = CREATE_ITEM(key, value);
     HashTableItem* item = createItem(key, value, valueSize);
     int index = hash(key);
 
@@ -129,7 +128,7 @@ bool insertHashTable(HashTable* table, uint64_t key, void* value, size_t valueSi
     }
 }
 
-char* searchHashTable(HashTable* table, uint64_t key) {
+void* searchHashTable(HashTable* table, uint64_t key) {
     int index = hash(key);
     HashTableItem* item = table -> items[index];
 

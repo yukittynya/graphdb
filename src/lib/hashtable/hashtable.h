@@ -35,7 +35,7 @@ void handleCollision(HashTable* table, int index, HashTableItem* item);
 HashTableItem* createItem(uint64_t key, void* value, size_t valueSize);
 HashTable* createHashTable(int size);
 bool insertHashTable(HashTable* table, uint64_t key, void* value, size_t valueSize);
-char* searchHashTable(HashTable* table, uint64_t key);
+void* searchHashTable(HashTable* table, uint64_t key);
 void deleteFromHashTable(HashTable* table, uint64_t key);
 
 

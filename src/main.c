@@ -14,5 +14,13 @@ int main(int argc, char *argv[]) {
 
     printHashTable(table);
 
+    char* value = (char*) searchHashTable(table, 3);
+
+    printf("\nSearched for Key: %d and Found: %s\n", 3, value);
+
+    deleteFromHashTable(table, 3);
+
+    printHashTable(table);
+
     freeHashTable(table);
 }
