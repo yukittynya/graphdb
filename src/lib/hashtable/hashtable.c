@@ -48,6 +48,7 @@ HashTableItem* removeFromList(ListNode* head) {
     head = nextNode;
 
     HashTableItem* item = NULL;
+
     memcpy(current -> item, item, sizeof(HashTableItem));
 
     free(current -> item -> value);
@@ -93,12 +94,8 @@ HashTable* createHashTable(int size) {
 
     for (int i = 0; i < size; i++) {
         table -> items[i] = NULL;
-    } 
-
-    for (int i = 0; i < size; i++) {
         table -> overflowBuckets[i] = NULL;
     } 
-
 
     return table;
 }
