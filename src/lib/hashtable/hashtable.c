@@ -227,6 +227,7 @@ void printHashTable(HashTable* table) {
     for (int i = 0; i < table -> size; i++) {
         if (table -> items[i] != NULL) {
             printf("\nIndex: %d\n\tKey: %zu\n\tValue: %p\n", i, table -> items[i] -> key, table -> items[i] -> value);
+
             if (table -> overflowBuckets[i] != NULL) {
                 ListNode* head = table -> overflowBuckets[i];
 
