@@ -1,4 +1,5 @@
 #include "lib/hashtable/hashtable.h"
+#include "lib/parser/parser.h"
 #include "lib/info.h"
 
 #include <stdio.h>
@@ -23,4 +24,6 @@ int main(int argc, char *argv[]) {
     printHashTable(table);
 
     freeHashTable(table);
+
+    parseNodes();
 }

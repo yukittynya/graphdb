@@ -1,13 +1,16 @@
 CC = clang
 FLAGS = -Werror -flto -O3 -ffast-math
 
-build/bin/graphdb: build/main.o build/hashtable.o | build/bin
+build/bin/graphdb: build/main.o build/hashtable.o build/parser.o | build/bin
 	$(CC) $(FLAGS) $? -o $@ 
 
 build/main.o: src/main.c | build
 	$(CC) $(FLAGS) -c $? -o $@ 
 
 build/hashtable.o: src/lib/hashtable/hashtable.c | build
+	$(CC) $(FLAGS) -c $? -o $@ 
+
+build/parser.o: src/lib/parser/parser.c | build
 	$(CC) $(FLAGS) -c $? -o $@ 
 	
 build: 
