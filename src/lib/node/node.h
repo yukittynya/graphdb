@@ -39,4 +39,6 @@ typedef struct {
     PropertyMap* properties;
 } Node;
 
+Node createNode();
+
 #endif // !NODE_H

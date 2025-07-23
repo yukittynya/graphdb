@@ -1,5 +1,6 @@
 #include "parser.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -13,11 +14,19 @@ char* getBuffer(char* path) {
 
     char* buffer = (char*) malloc(65536);
 
+    bool inString = false;
+
     int c;
     int i = 0;
 
     while ((c = fgetc(file)) != EOF) {
-        if (c != ' ' && c != '\n') {
+        if (c == '"') {
+            inString = !inString;
+        }
+
+        if (c != ' ' && c != '\n' && !inString) {
+            buffer[i++] = c;
+        } else if (inString) {
             buffer[i++] = c;
         }
     }
@@ -36,6 +45,7 @@ HashTable* parseNodes() {
     int start = -1;
     int end = 0;
     int i = 0;
+
     
     while (buffer[i] != '\0') {
         if (buffer[i] == '{') {
