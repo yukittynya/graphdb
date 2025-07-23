@@ -12,7 +12,7 @@ char* getBuffer(char* path) {
         exit(1);
     }
 
-    char* buffer = (char*) malloc(65536);
+    char* buffer = (char*) malloc(sizeof(char) * 65536);
 
     bool inString = false;
 
