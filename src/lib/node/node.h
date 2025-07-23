@@ -6,10 +6,10 @@
 #include <stdlib.h>
 
 typedef enum {
-    PROPERTY_INT,
-    PROPERTY_FLOAT,
     PROPERTY_BOOL,
     PROPERTY_CHAR,
+    PROPERTY_FLOAT,
+    PROPERTY_INT,
     PROPERTY_STRING,
 } PropertyType;
 
@@ -18,6 +18,7 @@ typedef struct {
     union {
         int i32;
         double f64;
+        char c;
         char* string;
         bool boolean;
     } value;
@@ -39,6 +40,8 @@ typedef struct {
     PropertyMap* properties;
 } Node;
 
-Node createNode();
+PropertyValue* createPropertyValue(PropertyType type, void* data); 
+Property* createProperty(char* key, PropertyType type, void* data);
+PropertyMap* createProprtyMap(Property properties[], size_t capacity);
 
 #endif // !NODE_H

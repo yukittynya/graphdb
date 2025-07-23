@@ -59,7 +59,12 @@ HashTable* parseNodes() {
                 nodeData[end - start + 1] = '\0';
 
                 // TODO: Parse nodeData, handle node creation and insertion into HashTable :3
-                printf("%s\n", nodeData); 
+                char* token = strtok(nodeData, ";");
+
+                while (token != NULL) {
+                    printf("%s\n", token);
+                    token = strtok(NULL, ";");
+                }
 
                 free(nodeData);
                 nodeData = NULL;
